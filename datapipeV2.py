@@ -326,6 +326,7 @@ class DataProcessor:
                 last_9_rows_values = combined_df.iloc[-9:][self.columns_of_interest].values
                 last_10_rows_values = np.vstack([last_9_rows_values,to_predict])
                 last_9_test = combined_df.iloc[-9:]['direction'].values
+                last_19_test = combined_df.iloc[-19:]['direction'].values
 
                 loaded_model = load_model(self.model_path)
                 predictions = loaded_model.predict(last_10_rows_values)
@@ -346,10 +347,10 @@ class DataProcessor:
                 print('Updated predictions...')
 
                 #accuracy
-                last_preds = combined_dff['pred'][-10:-1].values
-                accuracy_last_9 = accuracy_score(last_9_test, last_preds)*100
-                accuracy_last_9 = np.round(accuracy_last_9, 1)
-                print('Getting accuracy of last 10 days...')
+                last_preds = combined_dff['pred'][-20:-1].values
+                accuracy_last_19 = accuracy_score(last_19_test, last_preds)*100
+                accuracy_last_19 = np.round(accuracy_last_19, 1)
+                print('Getting accuracy of last 20 days...')
 
                 #for table
                 dates = new_df.index[1:10].tolist()
@@ -363,7 +364,7 @@ class DataProcessor:
                 df_table['Actual'] = df_table['Actual'].map({0: 'Fall', 1: 'Rise'})
 
 
-                acc = [0, accuracy_last_9]
+                acc = [0, accuracy_last_19]
                 df_acc = pd.DataFrame(acc)
                 df_acc.to_csv(self.latest_accuracy, index=True)
 
@@ -372,7 +373,7 @@ class DataProcessor:
 
                 print('Data trnsformation process completed...')
 
-                return direction, df_table, accuracy_last_9, dis_date
+                return direction, df_table, accuracy_last_19, dis_date
             
             else:
                 print('Try again...')
@@ -388,10 +389,11 @@ class DataProcessor:
 
 
 
-            last_preds = pred_df['pred'][-10:-1].values
+            last_preds = pred_df['pred'][-20:-1].values
             last_9_test = price_data.iloc[-9:]['direction'].values
-            accuracy_last_9 = accuracy_score(last_9_test, last_preds)*100
-            accuracy_last_9 = np.round(accuracy_last_9, 1)
+            last_19_test = price_data.iloc[-19:]['direction'].values
+            accuracy_last_19 = accuracy_score(last_19_test, last_preds)*100
+            accuracy_last_19 = np.round(accuracy_last_19, 1)
             direction = pred_df['pred'][-1]
 
             #for table
@@ -404,13 +406,13 @@ class DataProcessor:
             df_table['Prediction'] = df_table['Prediction'].map({0: 'Fall', 1: 'Rise'})
             df_table['Actual'] = df_table['Actual'].map({0: 'Fall', 1: 'Rise'})
 
-            acc = [0, accuracy_last_9]
+            acc = [0, accuracy_last_19]
             df_acc = pd.DataFrame(acc)
             df_acc.to_csv(self.latest_accuracy, index=True)
 
             dis_date = date.today()
 
-            return direction, df_table, accuracy_last_9, dis_date
+            return direction, df_table, accuracy_last_19, dis_date
         
     
     def get_latest_accuracy(self):
