@@ -354,11 +354,12 @@ class DataProcessor:
 
                 #for table
                 dates = new_df.index[1:10].tolist()
-                predicted = last_preds
+                predicted = combined_dff['pred'][-10:-1].values
                 actual = last_9_test
                 predicted_flat = predicted #.flatten()
                 print('Loading table...')
                 df_table = pd.DataFrame({'Date': dates, 'Prediction': predicted_flat, 'Actual': actual})
+                
                 # Map numeric values to corresponding categories
                 df_table['Prediction'] = df_table['Prediction'].map({0: 'Fall', 1: 'Rise'})
                 df_table['Actual'] = df_table['Actual'].map({0: 'Fall', 1: 'Rise'})

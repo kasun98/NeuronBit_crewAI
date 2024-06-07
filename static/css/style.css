@@ -425,11 +425,16 @@ a:focus {
   background-color: #0a0a0a00;
   padding: 20px;
   border-radius: 10px;
-  border: 2px solid #00b0f095;
-  box-shadow: 0 0 30px #00a0f0;
+  border: 2px solid #41414195;
+  box-shadow: 0 0 30px #4b4b4b;
+  transition: all 1s;
   height: 95%;
 }
 
+.service_section .box:hover {
+  border: 2px solid #0fa9f100;
+  box-shadow: 0 0 30px #00a0f0;
+}
 
 
 .service_section .box .img-box {
